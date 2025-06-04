@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crick Post - Professional Cricket Website</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  /* Root variables for consistent colors throughout the site */
+  :root {
+    --rich-green: #005700;
+    --gold: #d4af37;
+    --dark-box-bg: #1a1a1a;
+    --dark-gray: #ccc;
+    --white: #fff;
+    --black-dark: #222;
+  }
+  /* Universal box-sizing for better layout control */
+  * {
+    box-sizing: border-box;
+  }
+  /* Basic body styling */
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--white);
+    color: var(--black-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 140px; /* Enough space for footer */
+  }
+  /* Header styles including nav bar */
+  header {
+    background-color: var(--rich-green);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+  }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  nav a {
+    text-decoration: none;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+  }
+  nav a:hover,
+  nav a:focus,
+  nav a.active {
+    color: var(--white);
+  }
+  /* Main content styling */
+  main {
+    max-width: 1100px;
+    margin: 2rem auto 3rem auto;
+    padding: 0 1rem;
+  }
+  h1, h2, h3 {
+    margin-top: 0;
+  }
+  h1 {
+    font-size: 2.5rem;
+    color: var(--rich-green);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    color: var(--rich-green);
+    border-bottom: 3px solid var(--gold);
+    padding-bottom: 0.3rem;
+    margin-bottom: 1.5rem;
+  }
+  section {
+    margin-bottom: 3rem;
+  }
+  /* Hide sections not active */
+  section:not(.active) {
+    display: none;
+  }
+  /* Dark boxes styling for content blocks */
+  .dark-box {
+    background-color: var(--dark-box-bg);
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    padding: 1.25rem 1.5rem;
+    color: var(--white);
+  }
+  /* News cards container with grid layout */
+  .news-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  /* Individual news card styling */
+  .news-card {
+    background-color: var(--dark-box-bg);
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    outline-offset: 4px;
+    cursor: pointer;
+  }
+  .news-card:hover,
+  .news-card:focus {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.6);
+    outline: none;
+  }
+  .news-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+  .news-card-content {
+    padding: 1rem 1.25rem 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .headline {
+    color: var(--gold);
+    margin: 0 0 0.75rem 0;
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+  .description {
+    color: var(--dark-gray);
+    font-size: 0.95rem;
+    flex-grow: 1;
+  }
+  /* About section in dark box */
+  .about {
+    background-color: var(--dark-box-bg);
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    padding: 1.5rem 2rem;
+    color: var(--white);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Footer styling fixed to bottom */
+  footer {
+    background-color: var(--rich-green);
+    color: var(--gold);
+    padding: 1rem 2rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  /* Social media container */
+  .social-media {
+    display: flex;
+    gap: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+  /* Social icons styling */
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .social-icon:hover,
+  .social-icon:focus {
+    background-color: var(--gold);
+    color: var(--rich-green);
+    outline: none;
+  }
+  /* Responsive nav layout */
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    footer {
+      padding: 1rem;
+      font-size: 14px;
+    }
+    .social-icon {
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+    }
+  }
+  /* Accessibility focus outlines for keyboard users */
+  a:focus,
+  .news-card:focus-within {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+  /* VIDEO THUMBNAILS GRID */
+  .videos-canvas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  .video-thumb {
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    background-color: var(--dark-box-bg);
+  }
+  .video-thumb:hover,
+  .video-thumb:focus {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    outline: none;
+  }
+  .video-thumb img {
+    width: 100%;
+    display: block;
+  }
+  .video-thumb .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .video-thumb .play-button::before {
+    content: "";
+    display: inline-block;
+    margin-left: 4px;
+    border-style: solid;
+    border-width: 10px 0 10px 16px;
+    border-color: transparent transparent transparent var(--rich-green);
+  }
+  /* MODAL OVERLAY */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom:0;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* MODAL CLOUD */
+  .modal-cloud {
+    background-color: var(--dark-box-bg);
+    border-radius: 1.5rem;
+    box-shadow: 0 0 40px rgba(212,175,55,0.8);
+    max-width: 900px;
+    width: 90%;
+    max-height: 80%;
+    padding: 1rem 1rem 2rem 1rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  /* RESPONSIVE YOUTUBE IFRAME */
+  .modal-cloud iframe {
+    border-radius: 1rem;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  }
+  /* Because iframe is absolutely positioned inside a relative container */
+  .iframe-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    margin-bottom: 1rem;
+  }
+  .iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-radius: 1rem;
+  }
+  /* CLOSE BUTTON */
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: var(--gold);
+    color: var(--rich-green);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--gold);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .close-button:hover,
+  .close-button:focus {
+    background-color: var(--rich-green);
+    color: var(--gold);
+    outline: none;
+  }
+
+  /* ARTICLE MODAL CONTENT STYLING */
+  .article-title {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .article-content p {
+    color: var(--white);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Scrollbar styling for modal if content overflows */
+  .modal-cloud::-webkit-scrollbar {
+    width: 10px;
+  }
+  .modal-cloud::-webkit-scrollbar-track {
+    background: rgba(212,175,55,0.1);
+    border-radius: 10px;
+  }
+  .modal-cloud::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav aria-label="Primary Navigation">
+    <ul>
+      <li><a href="#home" class="nav-link active" tabindex="0">Home</a></li>
+      <li><a href="#news" class="nav-link" tabindex="0">News</a></li>
+      <li><a href="#videos" class="nav-link" tabindex="0">Videos</a></li>
+      <li><a href="#about" class="nav-link" tabindex="0">About</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section id="home" class="active" aria-label="Home section">
+    <h1>Welcome to The Crick Post</h1>
+    <p style="max-width:600px; margin: 0 auto 2rem; text-align:center; color:#555; font-size:1.1rem;">
+      The Crick Post is your go-to destination for the latest updates, scores, and stories from the world of cricket. Stay connected with thrilling match reports, in-depth player analysis, and exclusive video highlights.
+    </p>
+    <p>Whether you are an avid fan or new to the sport, our fresh, professional content brings the excitement of cricket right to your screen. Dive into detailed coverage of international series, domestic leagues, and grassroots cricket.</p>
+    <p>Explore our News section for breaking stories and expert opinions, watch top moments and interviews in Videos, and learn more about our passionate team in the About section.</p>
+    <p>Join the Crick Post community today and celebrate the spirit of cricket with us!</p>
+  </section>
+
+  <section id="news" aria-label="News section">
+    <h2>Latest News</h2>
+    <div class="news-cards">
+      <article class="news-card" tabindex="0" data-article-id="article1" aria-label="News article: Thrilling Match Scheduled Between India and Australia">
+        <img src="https://static.toiimg.com/thumb/msid-121608970,imgsize-115092,width-400,resizemode-4/121608970.jpg" alt="Cricket players in action" />
+        <div class="news-card-content">
+          <h3 class="headline">Royal Challengers Bangalore: IPL 2025 Champions at Last!</h3>
+          <p class="description">In the 2025 IPL season, Royal Challengers Bangalore finally turned their long-awaited dream into reality by winning the IPL trophy for the first time. This victory was not just about lifting a cup — it was the reward for years of hard work, patience, and resilience. Let’s take a detailed look at their memorable journey.</p>
+        </div>
+      </article>
+      <article class="news-card" tabindex="0" data-article-id="article2" aria-label="News article: Player Spotlight Shines Bright">
+        <img src="https://newslivetv.com/wp-content/uploads/2025/05/WTC-Final-2025-South-Africa-and-Australia-Announce-Squads-for-the-Big-Clash-at-Lords.webp" alt="Cricket player preparing to bat" />
+        <div class="news-card-content">
+          <h3 class="headline">THE FINAL SHOWDOWN: SA vs AUS – The WTC Final 2025</h3>
+          <p class="description">Full squads, expert analysis, and who holds the edge in this epic red-ball finale at Lord’s.</p>
+        </div>
+      </article>
+      <article class="news-card" tabindex="0" data-article-id="article3" aria-label="News article: Cricket World Cup Group Stages">
+        <img src="https://images.unsplash.com/photo-1532629345422-7515f62a2d89?auto=format&fit=crop&w=600&q=60" alt="Cricket stadium filled with fans" />
+        <div class="news-card-content">
+          <h3 class="headline">Cricket World Cup: Group Stages in Full Swing</h3>
+          <p class="description">Catch the latest scores and highlights as teams battle it out in the group stages of the Cricket World Cup, showcasing skill and determination.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="videos" aria-label="Videos section">
+    <h2>Videos</h2>
+    <div class="videos-canvas" role="region" aria-live="polite" aria-label="Cricket videos gallery">
+      <div class="video-thumb" tabindex="0" role="button" aria-pressed="false" aria-label="Play video: Cricket World Cup Highlights 2023" data-video-id="5qap5aO4i9A">
+        <img src="https://img.youtube.com/vi/5qap5aO4i9A/hqdefault.jpg" alt="Cricket World Cup Highlights 2023 Thumbnail" />
+        <div class="play-button"></div>
+      </div>
+      <div class="video-thumb" tabindex="0" role="button" aria-pressed="false" aria-label="Play video: Top 10 Sixes in Cricket History" data-video-id="VYOjWnS4cMY">
+        <img src="https://img.youtube.com/vi/VYOjWnS4cMY/hqdefault.jpg" alt="Top 10 Sixes in Cricket History Thumbnail" />
+        <div class="play-button"></div>
+      </div>
+      <div class="video-thumb" tabindex="0" role="button" aria-pressed="false" aria-label="Play video: Legendary Batsman Highlights" data-video-id="xvFZjo5PgG0">
+        <img src="https://img.youtube.com/vi/xvFZjo5PgG0/hqdefault.jpg" alt="Legendary Batsman Highlights Thumbnail" />
+        <div class="play-button"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" aria-label="About section">
+    <h2>About Us</h2>
+    <div class="about">
+      <p>
+        The Crick Post is committed to bringing cricket enthusiasts the most reliable and engaging cricket news and multimedia content. Our mission is to unite fans by delivering comprehensive coverage of this beloved sport.
+      </p>
+      <p>
+        Established in 2020 by a group of cricket aficionados, we strive to create a platform where quality journalism meets passionate storytelling.
+      </p>
+      <p>
+        Our dedicated team of sports journalists, analysts, and video producers bring you the stories that matter—whether it's thrilling international clashes, emerging talent, or the cultural impact of cricket worldwide.
+      </p>
+      <p>
+        From grassroots cricket to World Cup finals, we cover every aspect to keep you informed and entertained.
+      </p>
+      <p>
+        Join our growing community and experience the world of cricket like never before.
+      </p>
+      <p>
+        Thank you for trusting Crick Post as your cricket companion.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="social-media" aria-label="Social media links">
+    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook" tabindex="0" title="Facebook">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M22 12a10 10 0 1 0-11.5 9.8v-6.9h-2.6v-2.9h2.6v-2.2c0-2.6 1.5-4 3.7-4 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.7.8-1.7 1.7v2h2.9l-.5 2.9h-2.4V22A10 10 0 0 0 22 12z"/></svg>
+    </a>
+    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter" tabindex="0" title="Twitter">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M22.46 6c-.77.35-1.6.59-2.46.7a4.27 4.27 0 0 0 1.88-2.36 8.53 8.53 0 0 1-2.71 1.03 4.22 4.22 0 0 0-7.19 3.86A12 12 0 0 1 3 5.15a4.22 4.22 0 0 0 1.3 5.6 4.2 4.2 0 0 1-1.91-.53v.05a4.23 4.23 0 0 0 3.4 4.14c-.33.1-.67.12-1.03.04a4.23 4.23 0 0 0 3.95 2.94A8.5 8.5 0 0 1 2 18.37a11.97 11.97 0 0 0 6.5 1.9c7.8 0 12.08-6.5 12.08-12.15 0-.18 0-.35-.01-.53A8.72 8.72 0 0 0 22.46 6z"/></svg>
+    </a>
+    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram" tabindex="0" title="Instagram">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M7.5 2h9a5.5 5.5 0 0 1 5.5 5.5v9a5.5 5.5 0 0 1-5.5 5.5h-9a5.5 5.5 0 0 1-5.5-5.5v-9A5.5 5.5 0 0 1 7.5 2Zm-.7 2a3.2 3.2 0 0 0-3.2 3.2v6.6a3.2 3.2 0 0 0 3.2 3.2h6.6a3.2 3.2 0 0 0 3.2-3.2v-6.6a3.2 3.2 0 0 0-3.2-3.2Zm7.9.84a1.38 1.38 0 1 1-2.76 0 1.38 1.38 0 0 1 2.76 0Zm-3.3 1.4a4.1 4.1 0 1 1 0 8.2 4.1 4.1 0 0 1 0-8.2Z" /></svg>
+    </a>
+  </div>
+  <p>&copy; 2024 Crick Post. All rights reserved.</p>
+</footer>
+
+<!-- Modal for video playback -->
+<div class="modal-overlay" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+  <div class="modal-cloud">
+    <button class="close-button" aria-label="Close video modal">&times;</button>
+    <div class="iframe-container" id="iframeContainer" aria-live="polite">
+      <!-- YouTube iframe inserted dynamically here -->
+    </div>
+  </div>
+</div>
+
+<!-- Modal for article display -->
+<div class="modal-overlay" id="articleModal" role="dialog" aria-modal="true" aria-labelledby="articleModalTitle" tabindex="-1">
+  <div class="modal-cloud">
+    <button class="close-button" aria-label="Close article modal">&times;</button>
+    <div class="article-content" tabindex="0" id="articleContent" aria-live="polite">
+      <!-- Full article content will be injected here -->
+    </div>
+  </div>
+</div>
+
+<!-- Hidden full article contents -->
+<div style="display:none;" id="fullArticles">
+  <div id="article1" >
+  <h1 class="article-title">Royal Challengers Bangalore: IPL 2025 Champions at Last!</h1>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://static.toiimg.com/thumb/msid-121608970,imgsize-115092,width-400,resizemode-4/121608970.jpg" alt="RCB Lifting IPL 2025 Trophy" />
+
+<h3 style="color: #d4af37;">By Ali Abbas<br><small>(Founder of this webpage)</small></h3>
+
+<p><strong>The Incredible Journey of RCB in IPL 2025 — A Story of Heart and Triumph</strong></p>
+
+<p>In the 2025 IPL season, Royal Challengers Bangalore finally turned their long-awaited dream into reality by winning the IPL trophy for the first time. This victory was not just about lifting a cup — it was the reward for years of hard work, patience, and resilience. Let’s take a detailed look at their memorable journey.</p>
+
+<p><strong>Smart Team Building and Preparations</strong></p>
+
+<p>RCB entered the season with a well-balanced squad, carefully crafted to combine experience with young talent. Virat Kohli, back in excellent batting form, continued as the inspirational captain, providing stability and guidance on the field. The addition of Australian pacer Josh Hazlewood strengthened the bowling department. Indian swing specialist Bhuvneshwar Kumar and versatile all-rounder Krunal Pandya added variety and depth to the team.</p>
+
+<p><strong>Consistent Performances in the League Phase</strong></p>
+
+<p>Throughout the league stage, RCB displayed remarkable consistency. They won important matches against strong teams such as Mumbai Indians and Chennai Super Kings. Kohli played several match-winning innings, skillfully managing the pressure situations with his vast experience.</p>
+
+<p>Krunal Pandya’s all-round contributions with both bat and ball kept the team balanced. Meanwhile, Hazlewood and Bhuvneshwar consistently troubled the opposition with their disciplined bowling spells.</p>
+
+<p><strong>Key Players Who Made the Difference</strong></p>
+
+<p><strong>Virat Kohli:</strong> Kohli’s leadership and batting were pivotal for the team. He consistently scored runs and anchored the innings in challenging situations, ensuring the team never lost momentum.</p>
+
+<p><strong>Krunal Pandya:</strong> Krunal was a true game-changer. His explosive batting in the middle order and timely wickets with his spin bowling often swung matches in RCB’s favor.</p>
+
+<p><strong>Josh Hazlewood:</strong> Hazlewood’s accurate and disciplined pace bowling brought crucial early breakthroughs and kept the opposition batsmen under constant pressure, especially in the powerplay and death overs.</p>
+
+<p><strong>Bhuvneshwar Kumar:</strong> Known for his exquisite swing bowling, Bhuvneshwar’s wickets at critical moments turned the tide of several matches, making him a key asset in RCB’s bowling lineup.</p>
+
+<p><strong>The High-Stakes Playoffs and The Final Showdown</strong></p>
+
+<p>In the playoffs, RCB stepped up their game. Krunal Pandya’s outstanding bowling in the final was instrumental in sealing the win. In the grand final, Kohli led from the front with a composed innings while the bowlers, especially Hazlewood and Bhuvneshwar, executed their plans flawlessly. Despite intense pressure, the team showcased tremendous composure and teamwork to clinch the IPL 2025 title.</p>
+
+<p><strong>What This Victory Means</strong></p>
+
+<p>This triumph is not just for the players and management but for the passionate fans who stood by RCB through thick and thin. It’s a new dawn for the franchise that sets a strong foundation for future success.</p>
+
+
+</p>
+  </div>
+  <div id="article2" >
+<h1 class="article-title" style="color: #FF6347; font-size: 36px; font-weight: bold; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin-top: 20px;">
+  THE FINAL SHOWDOWN: SA vs AUS – The WTC Final 2025
+</h1>
+
+<img src="https://resources.pulse.icc-cricket.com/ICC/photo/2023/06/10/cd8b207a-7863-455f-8b4b-f55b87892bfb/WTC-Final-Trophy-lift.jpg" alt="WTC Final Trophy" style="display: block; margin: 20px auto; max-width: 100%; height: auto;" />
+
+<h3 style="text-align: center; color: #FFFFFF; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  By [Your Name Here] <br><small style="color: #CCCCCC;">(Speaker of this webpage)</small>
+</h3>
+
+<p style="font-size: 18px; color: #FFFFFF; font-family: 'Segoe UI', sans-serif; line-height: 1.7; padding: 0 20px;">
+  <strong>The stage is set. Two cricketing powerhouses — South Africa and Australia — are ready to clash at Lord’s in the ICC World Test Championship Final 2025. This is not just a match; it’s a legacy-defining battle between grit and glory.</strong>
+</p>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #555;">
+
+<h2 style="color: #00BFFF; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">📝 Official Squads</h2>
+
+<h3 style="color: #32CD32; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">South Africa Squad:</h3>
+<ul style="padding: 0 40px; font-size: 16px; font-family: 'Segoe UI', sans-serif; color: #DDDDDD;">
+  <li>Temba Bavuma (Captain)</li>
+  <li>David Bedingham</li>
+  <li>Corbin Bosch</li>
+  <li>Tony de Zorzi</li>
+  <li>Marco Jansen</li>
+  <li>Keshav Maharaj</li>
+  <li>Aiden Markram</li>
+  <li>Wiaan Mulder</li>
+  <li>Senuran Muthusamy</li>
+  <li>Lungi Ngidi</li>
+  <li>Dane Paterson</li>
+  <li>Kagiso Rabada</li>
+  <li>Ryan Rickelton (WK)</li>
+  <li>Tristan Stubbs</li>
+  <li>Kyle Verreynne (WK)</li>
+</ul>
+
+<h3 style="color: #32CD32; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">Australia Squad:</h3>
+<ul style="padding: 0 40px; font-size: 16px; font-family: 'Segoe UI', sans-serif; color: #DDDDDD;">
+  <li>Pat Cummins (Captain)</li>
+  <li>Scott Boland</li>
+  <li>Alex Carey (WK)</li>
+  <li>Cameron Green</li>
+  <li>Josh Hazlewood</li>
+  <li>Travis Head</li>
+  <li>Josh Inglis (WK)</li>
+  <li>Usman Khawaja</li>
+  <li>Sam Konstas</li>
+  <li>Matthew Kuhnemann</li>
+  <li>Marnus Labuschagne</li>
+  <li>Nathan Lyon</li>
+  <li>Steve Smith</li>
+  <li>Mitchell Starc</li>
+  <li>Beau Webster</li>
+  <li><em>Travelling Reserve: Brendan Doggett</em></li>
+</ul>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #555;">
+
+<h2 style="color: #00BFFF; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">🔍 Team Analysis</h2>
+
+<h3 style="color: #FF4500; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">South Africa – Steady Firepower and Unpredictable Depth</h3>
+<p style="font-size: 16px; color: #FFFFFF; font-family: 'Segoe UI', sans-serif; line-height: 1.6; padding: 0 20px;">
+  South Africa brings a well-rounded, multi-dimensional squad into this final. Their pace battery — Kagiso Rabada, Lungi Ngidi, and Marco Jansen — is fast, hostile, and capable of swinging matches in any session.
+</p>
+<p style="padding: 0 20px; color: #CCCCCC;">
+  The spin department is handled by Keshav Maharaj. Their batting lineup includes gritty players like Aiden Markram and Tony de Zorzi, with flair coming from Tristan Stubbs and David Bedingham.
+</p>
+<p style="padding: 0 20px; color: #CCCCCC;">
+  Temba Bavuma's leadership has matured, while dual keepers (Verreynne & Rickelton) offer flexibility. All-rounders like Mulder and Muthusamy add depth.
+</p>
+<p style="padding: 0 20px; color: #90EE90;">
+  <strong>Strengths:</strong> World-class pace attack, all-round options.<br>
+  <strong>Concerns:</strong> Top-order inconsistency, pressure in big finals.
+</p>
+
+<h3 style="color: #FF4500; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">Australia – Tested Warriors of the Red Ball</h3>
+<p style="font-size: 16px; color: #FFFFFF; font-family: 'Segoe UI', sans-serif; line-height: 1.6; padding: 0 20px;">
+  Australia’s lineup is full of veterans who know how to win Tests. Cummins, Starc, and Hazlewood are a terrifying pace trio, while Nathan Lyon holds his own in the spin department.
+</p>
+<p style="padding: 0 20px; color: #CCCCCC;">
+  Their top order boasts Khawaja, Smith, and Labuschagne — all seasoned in English conditions. Travis Head adds firepower, and Alex Carey provides reliable glove-work.
+</p>
+<p style="padding: 0 20px; color: #CCCCCC;">
+  Backups like Green, Inglis, and Webster give solid bench strength.
+</p>
+<p style="padding: 0 20px; color: #90EE90;">
+  <strong>Strengths:</strong> Experienced core, ruthless bowling, temperament under pressure.<br>
+  <strong>Concerns:</strong> Injury risks, middle-order dependency.
+</p>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #555;">
+
+<h2 style="color: #00BFFF; font-family: 'Segoe UI', sans-serif; padding: 0 20px;">📊 Verdict – Who Holds the Edge?</h2>
+<p style="font-size: 16px; color: #FFFFFF; font-family: 'Segoe UI', sans-serif; line-height: 1.6; padding: 0 20px;">
+  This final promises fire and flair. South Africa has youth and raw pace, while Australia has battle-tested giants who have delivered at this stage before.
+</p>
+<p style="padding: 0 20px; color: #CCCCCC;">
+  Based purely on balance, experience, and form...
+</p>
+<p style="padding: 0 20px; color: #7CFC00;">
+  <strong>Australia may slightly edge ahead — but as always in cricket, the best team on the day will triumph.</strong>
+</p>
+<p style="padding: 0 20px; color: #999999;">
+  As the Bhagavad Gita says: “You have a right to perform your duty, but not the fruits of your actions.” Let the game begin.
+</p>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #555;">
+
+<p style="text-align: center; font-style: italic; color: #AAAAAA; padding-bottom: 20px;">
+  Stay tuned for live updates and post-match analysis right here!
+</p>
+
+
+  </div>
+  <div id="article3" >
+    <h3 class="article-title">Cricket World Cup: Group Stages in Full Swing</h3>
+    <p>The Cricket World Cup group stages are delivering high-octane cricket, with teams battling fiercely to secure their spots in the knockout rounds. Expect thrilling finishes, unexpected upsets, and display of sheer skills.</p>
+    <p>Top teams are showcasing strategic brilliance with varied bowling attacks and aggressive batting lineups. Players are pushing limits to perform on the grandest stage, highlighting cricket's global passion and competitiveness.</p>
+    <p>Crick Post provides up-to-date live scores, expert match verdicts, player rankings, and in-depth tournament analysis. Stay connected to not miss any critical moments or expert insights throughout the tournament journey.</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const navLinks = document.querySelectorAll("nav a.nav-link");
+    const sections = document.querySelectorAll("main section");
+
+    function setActiveSection(targetId) {
+      sections.forEach(section => {
+        if(section.id === targetId) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+      navLinks.forEach(link => {
+        if(link.getAttribute("href") === "#" + targetId) {
+          link.classList.add("active");
+          link.setAttribute("aria-current", "page");
+          link.focus();
+        } else {
+          link.classList.remove("active");
+          link.removeAttribute("aria-current");
+        }
+      });
+
+      // Scroll to top of main content smoothly when section changes
+      const main = document.querySelector("main");
+      if(main){
+        main.scrollIntoView({behavior:"smooth"});
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", function(event) {
+        event.preventDefault();
+        const targetSectionId = this.getAttribute("href").substring(1);
+        setActiveSection(targetSectionId);
+        history.replaceState(null, null, "#" + targetSectionId);
+      });
+    });
+
+    // Show section from URL hash or default to home
+    let initialSection = "home";
+    if(window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      if([...sections].some(sec => sec.id === hash)) {
+        initialSection = hash;
+      }
+    }
+    setActiveSection(initialSection);
+
+    // VIDEO MODAL LOGIC
+    const videoModal = document.getElementById('videoModal');
+    const iframeContainer = document.getElementById('iframeContainer');
+    const videoCloseBtn = videoModal.querySelector('.close-button');
+    const videoThumbs = document.querySelectorAll('.video-thumb');
+
+    function openVideoModal(videoId, title) {
+      if(!videoId) return;
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+      iframeContainer.innerHTML = `<iframe src="${embedUrl}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      videoModal.classList.add('active');
+      videoModal.focus();
+      document.body.style.overflow = 'hidden'; // disable scroll when modal open
+    }
+
+    function closeVideoModal() {
+      videoModal.classList.remove('active');
+      iframeContainer.innerHTML = '';
+      document.body.style.overflow = ''; // restore scroll
+    }
+
+    videoThumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const videoId = thumb.getAttribute('data-video-id');
+        const title = thumb.getAttribute('aria-label') || 'Cricket video';
+        openVideoModal(videoId, title);
+      });
+      thumb.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const videoId = thumb.getAttribute('data-video-id');
+          const title = thumb.getAttribute('aria-label') || 'Cricket video';
+          openVideoModal(videoId, title);
+        }
+      });
+    });
+
+    videoCloseBtn.addEventListener('click', closeVideoModal);
+
+    videoModal.addEventListener('click', e => {
+      if(e.target === videoModal) {
+        closeVideoModal();
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && videoModal.classList.contains('active')) {
+        closeVideoModal();
+      }
+    });
+
+    // ARTICLE MODAL LOGIC
+    const articleModal = document.getElementById('articleModal');
+    const articleContent = document.getElementById('articleContent');
+    const articleCloseBtn = articleModal.querySelector('.close-button');
+    const fullArticlesContainer = document.getElementById('fullArticles');
+    const newsCards = document.querySelectorAll('.news-card');
+
+    function openArticleModal(articleId) {
+      if(!articleId) return;
+      const fullArticle = fullArticlesContainer.querySelector('#'+articleId);
+      if(fullArticle) {
+        articleContent.innerHTML = fullArticle.innerHTML;
+        articleModal.classList.add('active');
+        articleModal.focus();
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeArticleModal() {
+      articleModal.classList.remove('active');
+      articleContent.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    newsCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const articleId = card.getAttribute('data-article-id');
+        openArticleModal(articleId);
+      });
+      card.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const articleId = card.getAttribute('data-article-id');
+          openArticleModal(articleId);
+        }
+      });
+    });
+
+    articleCloseBtn.addEventListener('click', closeArticleModal);
+
+    articleModal.addEventListener('click', e => {
+      if(e.target === articleModal) {
+        closeArticleModal();
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && articleModal.classList.contains('active')) {
+        closeArticleModal();
+      }
+    });
+
+  });
+</script>
+</body>
+</html>
